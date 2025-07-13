@@ -132,7 +132,7 @@ public class StudentController {
     // ✅ LOGIN PAGE - GET
     @GetMapping("/login")
     public String loginPage() {
-        return "login";
+        return "views/login";
     }
 
     // ✅ LOGIN PAGE - POST
@@ -142,26 +142,26 @@ public class StudentController {
         String password = request.getParameter("password");
 
         if ("admin".equals(username) && "admin@123".equals(password)) {
-            return "redirect:/home";
+            return "redirect:/views/home";
         } else if ("user".equals(username) && "user@123".equals(password)) {
-            return "redirect:/home";
+            return "redirect:/views/home";
         } else {
             request.setAttribute("error", "Invalid username or password");
-            return "login";
+            return "views/login";
         }
     }
 
     // ✅ FORM PAGE
     @GetMapping("/home")
     public String home() {
-        return "index";
+        return "views/index";
     }
 
     // ✅ SUBMIT FORM DATA
     @PostMapping("/submit")
     public String submit(@ModelAttribute StudentModel student) {
         repo.save(student);
-        return "index";
+        return "views/index";
     }
 
     // ✅ VIEW ALL STUDENTS
@@ -169,27 +169,27 @@ public class StudentController {
     public String viewStudents(HttpServletRequest request) {
         List<StudentModel> students = repo.findAll();
         request.setAttribute("students", students);
-        return "view";
+        return "views/view";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteStudent(@PathVariable Integer id) {
         repo.deleteById(id);
-        return "redirect:/students";
+        return "redirect:/views/students";
     }
 
     @GetMapping("/edit/{id}")
     public String editStudent(@PathVariable Integer id, HttpServletRequest request) {
         StudentModel student = repo.findById(id).orElse(null);
         request.setAttribute("student", student);
-        return "edit";
+        return "views/edit";
     }
 
     // ✅ Handle Update
     @PostMapping("/update")
     public String updateStudent(@ModelAttribute StudentModel student) {
         repo.save(student); // If ID is present, it will update
-        return "redirect:/students";
+        return "redirect:/views/students";
     }
 }
 
